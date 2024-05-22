@@ -3,9 +3,13 @@ This is a test assignment for the Senior Golang Engineer position at [BlockRockS
 
 ## Task Description
 
-```еуче
-Нужно разработать приложение, которое через веб предоставляет список устройств в формате protobuf, включая тип (мышь, клавиатура, прочее), device path, vendorid, productid.
+
 ```
+Нужно разработать приложение, которое через веб предоставляет список 
+устройств в формате protobuf, включая тип (мышь, клавиатура, прочее), 
+device path, vendorid, productid.
+```
+
 
 ## Clarification Questions and Answers
 |Questions | Answers |
