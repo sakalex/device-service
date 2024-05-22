@@ -23,3 +23,19 @@ func (s *DeviceProvider) ListDevices(ctx context.Context, in *pb.GetDeviceListRe
 	}
 	return &pb.DeviceListResponse{Devices: devices}, nil
 }
+
+func (s *DeviceProvider) AddDevice(ctx context.Context, in *pb.AddDeviceRequest) (*pb.OperationStatus, error) {
+	err := s.repo.AddDevice(in.Device)
+	if err != nil {
+		return &pb.OperationStatus{Success: false}, err
+	}
+	return &pb.OperationStatus{Success: true}, nil
+}
+
+func (s *DeviceProvider) DeleteDevice(ctx context.Context, in *pb.DeleteDeviceRequest) (*pb.OperationStatus, error) {
+	err := s.repo.DeleteDevice(in.Id)
+	if err != nil {
+		return &pb.OperationStatus{Success: false}, err
+	}
+	return &pb.OperationStatus{Success: true}, nil
+}

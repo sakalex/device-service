@@ -19,6 +19,8 @@ const _ = grpc.SupportPackageIsVersion7
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type DeviceProviderServiceClient interface {
 	ListDevices(ctx context.Context, in *GetDeviceListRequest, opts ...grpc.CallOption) (*DeviceListResponse, error)
+	AddDevice(ctx context.Context, in *AddDeviceRequest, opts ...grpc.CallOption) (*OperationStatus, error)
+	DeleteDevice(ctx context.Context, in *DeleteDeviceRequest, opts ...grpc.CallOption) (*OperationStatus, error)
 }
 
 type deviceProviderServiceClient struct {
@@ -38,11 +40,31 @@ func (c *deviceProviderServiceClient) ListDevices(ctx context.Context, in *GetDe
 	return out, nil
 }
 
+func (c *deviceProviderServiceClient) AddDevice(ctx context.Context, in *AddDeviceRequest, opts ...grpc.CallOption) (*OperationStatus, error) {
+	out := new(OperationStatus)
+	err := c.cc.Invoke(ctx, "/device_service.DeviceProviderService/AddDevice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *deviceProviderServiceClient) DeleteDevice(ctx context.Context, in *DeleteDeviceRequest, opts ...grpc.CallOption) (*OperationStatus, error) {
+	out := new(OperationStatus)
+	err := c.cc.Invoke(ctx, "/device_service.DeviceProviderService/DeleteDevice", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // DeviceProviderServiceServer is the server API for DeviceProviderService service.
 // All implementations must embed UnimplementedDeviceProviderServiceServer
 // for forward compatibility
 type DeviceProviderServiceServer interface {
 	ListDevices(context.Context, *GetDeviceListRequest) (*DeviceListResponse, error)
+	AddDevice(context.Context, *AddDeviceRequest) (*OperationStatus, error)
+	DeleteDevice(context.Context, *DeleteDeviceRequest) (*OperationStatus, error)
 	mustEmbedUnimplementedDeviceProviderServiceServer()
 }
 
@@ -52,6 +74,12 @@ type UnimplementedDeviceProviderServiceServer struct {
 
 func (UnimplementedDeviceProviderServiceServer) ListDevices(context.Context, *GetDeviceListRequest) (*DeviceListResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method ListDevices not implemented")
+}
+func (UnimplementedDeviceProviderServiceServer) AddDevice(context.Context, *AddDeviceRequest) (*OperationStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method AddDevice not implemented")
+}
+func (UnimplementedDeviceProviderServiceServer) DeleteDevice(context.Context, *DeleteDeviceRequest) (*OperationStatus, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method DeleteDevice not implemented")
 }
 func (UnimplementedDeviceProviderServiceServer) mustEmbedUnimplementedDeviceProviderServiceServer() {}
 
@@ -84,6 +112,42 @@ func _DeviceProviderService_ListDevices_Handler(srv interface{}, ctx context.Con
 	return interceptor(ctx, in, info, handler)
 }
 
+func _DeviceProviderService_AddDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(AddDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeviceProviderServiceServer).AddDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/device_service.DeviceProviderService/AddDevice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeviceProviderServiceServer).AddDevice(ctx, req.(*AddDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _DeviceProviderService_DeleteDevice_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DeleteDeviceRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(DeviceProviderServiceServer).DeleteDevice(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/device_service.DeviceProviderService/DeleteDevice",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(DeviceProviderServiceServer).DeleteDevice(ctx, req.(*DeleteDeviceRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // DeviceProviderService_ServiceDesc is the grpc.ServiceDesc for DeviceProviderService service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -94,6 +158,14 @@ var DeviceProviderService_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "ListDevices",
 			Handler:    _DeviceProviderService_ListDevices_Handler,
+		},
+		{
+			MethodName: "AddDevice",
+			Handler:    _DeviceProviderService_AddDevice_Handler,
+		},
+		{
+			MethodName: "DeleteDevice",
+			Handler:    _DeviceProviderService_DeleteDevice_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

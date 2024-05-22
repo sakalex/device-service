@@ -6,6 +6,8 @@ option go_package = "github.com/sakalouski-alex/device-service/src/proto-gen;dev
 
 service DeviceProviderService {
     rpc ListDevices (GetDeviceListRequest) returns (DeviceListResponse) {}
+    rpc AddDevice (AddDeviceRequest) returns (OperationStatus) {}
+    rpc DeleteDevice (DeleteDeviceRequest) returns (OperationStatus) {}
 }
 
 message GetDeviceListRequest {}
@@ -14,11 +16,23 @@ message DeviceListResponse {
     repeated Device devices = 1;
 }
 
+message AddDeviceRequest {
+    Device device = 1;
+}
+
+message DeleteDeviceRequest {
+    string id = 1;
+}
+
+message OperationStatus {
+    bool success = 1;
+}
+
 message Device {
     enum Type {
-        MOUSE = 0;
-        KEYBOARD = 1;
-        OTHER = 2;
+        NO = 0;
+        MOUSE = 1;
+        KEYBOARD = 2;
     }
 
     string id = 1;

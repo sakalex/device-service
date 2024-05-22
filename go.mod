@@ -4,6 +4,7 @@ go 1.19
 
 require (
 	github.com/golang/glog v1.2.0
+	github.com/google/uuid v1.6.0
 	google.golang.org/grpc v1.64.0
 	google.golang.org/protobuf v1.34.1
 )

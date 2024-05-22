@@ -6,4 +6,6 @@ import (
 
 type DeviceRepo interface {
 	ListDevices() ([]*pb.Device, error)
+	AddDevice(newDevice *pb.Device) error
+	DeleteDevice(id string) error
 }
